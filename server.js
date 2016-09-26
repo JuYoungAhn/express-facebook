@@ -1,18 +1,15 @@
 var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
-
-
 // Configure the Facebook strategy for use by Passport.
-//
 // OAuth 2.0-based strategies require a `verify` function which receives the
 // credential (`accessToken`) for accessing the Facebook API on the user's
 // behalf, along with the user's profile.  The function must invoke `cb`
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
 passport.use(new Strategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
+    clientID: '310016876042099',
+    clientSecret: '6772bfc30e27720eac8d67122157aa47',
     callbackURL: 'http://localhost:3000/login/facebook/return'
   },
   function(accessToken, refreshToken, profile, cb) {
@@ -23,8 +20,6 @@ passport.use(new Strategy({
     // providers.
     return cb(null, profile);
   }));
-
-
 // Configure Passport authenticated session persistence.
 //
 // In order to restore authentication state across HTTP requests, Passport needs
@@ -39,17 +34,16 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(obj, cb) {
+  console.log(obj)
   cb(null, obj);
 });
-
 
 // Create a new Express application.
 var app = express();
 
 // Configure view engine to render EJS templates.
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
+app.set('view engine', 'jade');
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
@@ -61,26 +55,22 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(express.static('public'));
 
 // Define routes.
-app.get('/',
+app.get('/', function(req, res) {
+  res.render('index');
+});
+app.get('/main', function(req, res) {
+    res.render('main', { user: req.user});
+});
+
+app.get('/login/facebook', passport.authenticate('facebook'));
+
+app.get('/login/facebook/return',
+  passport.authenticate('facebook', { failureRedirect: '/' }),
   function(req, res) {
-    res.render('home', { user: req.user });
-  });
-
-app.get('/login',
-  function(req, res){
-    res.render('login');
-  });
-
-app.get('/login/facebook',
-  passport.authenticate('facebook'));
-
-app.get('/login/facebook/return', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
+    res.redirect('/main');
   });
 
 app.get('/profile',
