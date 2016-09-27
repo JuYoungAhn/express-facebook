@@ -8,8 +8,8 @@ var Strategy = require('passport-facebook').Strategy;
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
 passport.use(new Strategy({
-    clientID: '310016876042099',
-    clientSecret: '6772bfc30e27720eac8d67122157aa47',
+    clientID: '310016876042099', // your client id
+    clientSecret: '6772bfc30e27720eac8d67122157aa47', // your client secret
     callbackURL: 'http://localhost:3000/login/facebook/return'
   },
   function(accessToken, refreshToken, profile, cb) {
@@ -21,7 +21,6 @@ passport.use(new Strategy({
     return cb(null, profile);
   }));
 // Configure Passport authenticated session persistence.
-//
 // In order to restore authentication state across HTTP requests, Passport needs
 // to serialize users into and deserialize users out of the session.  In a
 // production-quality application, this would typically be as simple as
@@ -40,8 +39,6 @@ passport.deserializeUser(function(obj, cb) {
 
 // Create a new Express application.
 var app = express();
-
-// Configure view engine to render EJS templates.
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 // Use application-level middleware for common functionality, including
