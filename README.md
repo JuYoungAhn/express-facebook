@@ -1,7 +1,7 @@
-This example is based on this link
+This example is based on this link.
 https://github.com/passport/express-4.x-facebook-example
 The only difference is view engine. not ejs but jade.
-It will be your start application using facebook authentication application with jade view engine
+It will be your start application using facebook authentication application with jade view engine.
 
 ## Instructions
 
