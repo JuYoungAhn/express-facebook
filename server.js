@@ -8,8 +8,8 @@ var Strategy = require('passport-facebook').Strategy;
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
 passport.use(new Strategy({
-    clientID: '310016876042099', // your client id
-    clientSecret: '6772bfc30e27720eac8d67122157aa47', // your client secret
+    clientID: FACEBOOK_APP_ID, // your client id
+    clientSecret: FACEBOOK_APP_SECRET, // your client secret
     callbackURL: 'http://localhost:3000/login/facebook/return'
   },
   function(accessToken, refreshToken, profile, cb) {
